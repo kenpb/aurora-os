@@ -39,6 +39,9 @@ COPY --from=docker.io/mikefarah/yq /usr/bin/yq /usr/bin/yq
 # Change this if you want different version/tag of akmods.
 COPY --from=ghcr.io/ublue-os/akmods:main-39 /rpms /tmp/rpms
 
+# TODO: move to module
+RUN pip install --prefix=/usr topgrade
+
 # Run the build script, then clean up temp files and finalize container build.
 RUN chmod +x /tmp/build.sh && /tmp/build.sh && \
     rm -rf /tmp/* /var/* && ostree container commit
