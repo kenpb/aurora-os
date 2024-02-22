@@ -27,7 +27,7 @@ modules:
       - clamav-freshclam
       - clamd
       - clamtk
-      # podman not working for vscode's docker in docker 
+      # podman not working for vscode's docker in docker
       - docker-ce
       - docker-ce-cli
       - containerd.io
@@ -53,6 +53,7 @@ modules:
         - com.github.tchx84.Flatseal
         - com.mongodb.Compass
         - com.visualstudio.code
+        - com.github.Bleuzen.FFaudioConverter
         - io.dbeaver.DBeaverCommunity
         - com.getpostman.Postman
         - com.sweethome3d.Sweethome3d
@@ -63,7 +64,9 @@ modules:
         - org.videolan.VLC
         - org.gimp.GIMP
         - org.kde.krita
+        - org.kde.kompare
         - org.inkscape.Inkscape
+        - org.blender.Blender
         - org.keepassxc.KeePassXC
         - org.kde.kdenlive
         - org.remmina.Remmina

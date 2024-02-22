@@ -6,6 +6,16 @@ update:
     #!/usr/bin/bash
     /usr/bin/topgrade --config /usr/share/ublue-os/topgrade.toml --keep
 
+# Apply the silverblue usergroup workaround to fix my user groups
+fix-user-groups:
+    #!/usr/bin/bash
+    sudo su
+    groups=("libvirt" "kvm" "qemu" "docker")
+    for group in "${groups[@]}"; do
+        usermod -a -G "$group"
+        grep -E "^$group:" /usr/lib/group >> /etc/group
+    done
+
 # Fix the default Steam config to improve download speeds
 fix-steam-download-speed:
     mkdir -p $HOME/.local/share/Steam
