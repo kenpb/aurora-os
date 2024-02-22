@@ -16,7 +16,7 @@ FROM ${BASE_IMAGE_URL}:${IMAGE_MAJOR_VERSION}
 
 # The default recipe is set to the recipe's default filename
 # so that `podman build` should just work for most people.
-ARG RECIPE=recipe.yml 
+ARG RECIPE=recipe.yml
 # The default image registry to write to policy.json and cosign.yaml
 ARG IMAGE_REGISTRY=ghcr.io/ublue-os
 
@@ -40,6 +40,7 @@ COPY --from=docker.io/mikefarah/yq /usr/bin/yq /usr/bin/yq
 COPY --from=ghcr.io/ublue-os/akmods:main-39 /rpms /tmp/rpms
 
 # TODO: move to module
+RUN rpm-ostree install python3-pip
 RUN pip install --prefix=/usr topgrade
 
 # Run the build script, then clean up temp files and finalize container build.

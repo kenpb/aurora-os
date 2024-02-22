@@ -1,6 +1,11 @@
 import '100-bling.just'
 # most of this is from bazzite
 
+# Update system, flatpaks, and containers all at once
+update:
+    #!/usr/bin/bash
+    /usr/bin/topgrade --config /usr/share/ublue-os/topgrade.toml --keep
+
 # Fix the default Steam config to improve download speeds
 fix-steam-download-speed:
     mkdir -p $HOME/.local/share/Steam
