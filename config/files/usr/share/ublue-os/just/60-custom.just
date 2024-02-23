@@ -1,4 +1,5 @@
 import '100-bling.just'
+
 # most of this is from bazzite
 
 # Update system, flatpaks, and containers all at once
@@ -83,9 +84,7 @@ enable-vfio:
           --append-if-missing="iommu=pt" \
           --append-if-missing="rd.driver.pre=vfio_pci" \
           --append-if-missing="vfio_pci.disable_vga=1"
-        echo "VFIO will be enabled on next boot, make sure you enable IOMMU, VT-d or AMD-v in your BIOS!"
-        echo "Please understand that since this is such a niche use case, support will be very limited!"
-        echo "To add your unused/second GPU device ids to the vfio driver by running"
+        echo "lspci -nn | grep 'GPU_VENDOR'"
         echo 'rpm-ostree kargs --append-if-missing="vfio-pci.ids=xxxx:yyyy,xxxx:yyzz"'
         echo "NOTE: Your second GPU will not be usable by the host after you do this!"
       fi
@@ -95,10 +94,6 @@ enable-vfio:
 
 # Add SELinux file context for default looking-glass shm file so that libvirt can create it when needed
 selinux-looking-glass:
-    sudo tee << 'LOOKING_GLASS_TMP' > /etc/tmpfiles.d/10-looking-glass.conf
-    # Type Path               Mode UID  GID Age Argument
-    f /dev/shm/looking-glass 0660 1000 qemu -
-    LOOKING_GLASS_TMP
     sudo semanage fcontext -a -t svirt_tmpfs_t /dev/shm/looking-glass
 
 # Install Solaar for Logitech Mice, Keyboards, and Trackpads
@@ -124,9 +119,10 @@ install-insync: distrobox-check-fedora
 
 # Install Rambox for chat and productivity tools management
 install-rambox: distrobox-check-fedora
-    version=$(curl --silent "https://api.github.com/repos/ramboxapp/download/releases/latest" | grep -Po "(?<=\"tag_name\": \").*(?=\")")
-    distrobox-enter -n fedora -- bash -c 'sudo dnf install -y \
-      "https://github.com/ramboxapp/download/releases/download/${version}/Rambox-${version:1}-linux-x64.rpm" && \
+    distrobox-enter -n fedora -- bash -c 'version=$(curl --silent \
+        "https://api.github.com/repos/ramboxapp/download/releases/latest" | grep -Po "(?<=\"tag_name\": \").*(?=\")") && \
+      sudo dnf install -y \
+        "https://github.com/ramboxapp/download/releases/download/${version}/Rambox-${version:1}-linux-x64.rpm" && \
       distrobox-export --app rambox' && \
     mkdir -p ~/.config/autostart && \
     rm -f ~/.config/autostart/fedora-rambox.desktop && \
