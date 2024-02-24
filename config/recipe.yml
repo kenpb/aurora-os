@@ -23,7 +23,9 @@ modules:
   - type: rpm-ostree
     repos:
       - https://download.docker.com/linux/fedora/docker-ce.repo
+      - https://packages.microsoft.com/yumrepos/vscode/config.repo
     install:
+      - code
       - clamav-freshclam
       - clamd
       - clamtk
@@ -52,7 +54,6 @@ modules:
       # Multiple install of same flatpaks with different branches is not supported.
         - com.github.tchx84.Flatseal
         - com.mongodb.Compass
-        - com.visualstudio.code
         - com.github.Bleuzen.FFaudioConverter
         - io.dbeaver.DBeaverCommunity
         - com.getpostman.Postman
