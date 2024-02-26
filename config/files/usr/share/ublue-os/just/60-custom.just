@@ -1,11 +1,9 @@
-import '100-bling.just'
-
 # most of this is from bazzite
 
-# Update system, flatpaks, and containers all at once
-update:
-    #!/usr/bin/bash
-    /usr/bin/topgrade --config /usr/share/ublue-os/topgrade.toml --keep
+# # Update system, flatpaks, and containers all at once
+# update:
+#     #!/usr/bin/bash
+#     /usr/bin/topgrade --config /usr/share/ublue-os/topgrade.toml --keep
 
 # Apply the silverblue usergroup workaround to fix my user groups
 fix-user-groups:

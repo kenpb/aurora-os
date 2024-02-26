@@ -71,11 +71,11 @@ modules:
         - com.sweethome3d.Sweethome3d
         - com.github.unrud.VideoDownloader
         - org.chromium.Chromium
-        - com.microsoft.Edge
         - one.ablaze.floorp
         - org.videolan.VLC
         - org.gimp.GIMP
         - org.kde.krita
+        - org.kde.kate
         - org.kde.kompare
         - org.inkscape.Inkscape
         - org.blender.Blender
