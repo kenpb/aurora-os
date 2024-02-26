@@ -4,7 +4,7 @@ name: aurora-os
 description: My daily driver OS image.
 
 # the base image to build on top of (FROM) and the version tag to use
-base-image: ghcr.io/ublue-os/kinoite-main
+base-image: ghcr.io/ublue-os/bazzite
 image-version: 39 # latest is also supported if you want new updates ASAP
 
 # module configuration, executed in order
@@ -30,14 +30,25 @@ modules:
       - clamd
       - clamtk
       # podman not working for vscode's docker in docker
-      - docker-ce
-      - docker-ce-cli
-      - containerd.io
-      - docker-buildx-plugin
+      # - docker-ce
+      # - docker-ce-cli
+      # - containerd.io
+      # - docker-buildx-plugin
 
     remove:
-      - firefox # default firefox removed in favor of flatpak
-      - firefox-langpacks # langpacks needs to also be removed to prevent dependency problems
+      - input-remapper
+      - tailscale
+      - joystickwake
+      - joycond
+      - xdotool
+      - xwiimote-ng
+      - rom-properties-kf5
+      - cockpit-networkmanager
+      - cockpit-podman
+      - cockpit-selinux
+      - cockpit-system
+      - cockpit-navigator
+      - cockpit-storaged
 
   - type: default-flatpaks
     notify: true   # Send notification after install/uninstall is finished (true/false)
@@ -45,7 +56,7 @@ modules:
       # If no repo information is specified, Flathub will be used by default
       repo-url: https://dl.flathub.org/repo/flathub.flatpakrepo
       repo-name: flathub
-      repo-title: "Flathub (system-wide)" # Optional; this sets the remote's user-facing name in graphical frontends like GNOME Software
+      # repo-title: "Flathub (system-wide)" # Optional; this sets the remote's user-facing name in graphical frontends like GNOME Software
       install:
       # - org.gnome.Loupe
       # - one.ablaze.floorp//lightning # This is an example of flatpak which has multiple branches in selection (flatpak//branch).
@@ -60,7 +71,7 @@ modules:
         - com.sweethome3d.Sweethome3d
         - com.github.unrud.VideoDownloader
         - org.chromium.Chromium
-        - org.mozilla.firefox
+        - com.microsoft.Edge
         - one.ablaze.floorp
         - org.videolan.VLC
         - org.gimp.GIMP
@@ -78,8 +89,9 @@ modules:
         - md.obsidian.Obsidian
         - it.mijorus.gearlever
       remove:
-      # - org.gnome.eog
-      #
+        - org.kde.haruna
+        - com.github.marhkb.Pods
+
     # A flatpak repo can also be added without having to install flatpaks,
     # as long as one of the repo- fields is present
     user:
