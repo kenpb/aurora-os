@@ -85,7 +85,7 @@ modules:
         - org.qbittorrent.qBittorrent
         - org.apache.directory.studio
         - org.raspberrypi.rpi-imager
-        - eu.betterbird.Betterbird
+        - org.mozilla.Thunderbird
         - md.obsidian.Obsidian
         - it.mijorus.gearlever
       remove:
