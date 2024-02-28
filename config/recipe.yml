@@ -30,10 +30,10 @@ modules:
       - clamd
       - clamtk
       # podman not working for vscode's docker in docker
-      # - docker-ce
-      # - docker-ce-cli
-      # - containerd.io
-      # - docker-buildx-plugin
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+      - docker-buildx-plugin
 
     remove:
       - input-remapper
