@@ -105,14 +105,15 @@ fix-user-groups:
 
 # Install Insync for file synchronization with cloud services
 install-insync: distrobox-check-fedora
-    distrobox-enter -n fedora -- bash -c 'sudo rpm --import https://d2t3ff60b2tol4.cloudfront.net/repomd.xml.key && \
-      sudo sh -c "printf '[insync]\nname=insync repo\nbaseurl=http://yum.insync.io/fedora/\$releasever/\ngpgcheck=1\ngpgkey=https://d2t3ff60b2tol4.cloudfront.net/repomd.xml.key\nenabled=1\nmetadata_expire=120m' > /etc/yum.repos.d/insync.repo" && \
+    distrobox-enter -n fedora -- bash -c "releasever=$(rpm -q --qf \"%{version}\" -f /etc/fedora-release) && \
+      sudo rpm --import https://d2t3ff60b2tol4.cloudfront.net/repomd.xml.key && \
+      sudo sh -c \"printf '[insync]\nname=insync repo\nbaseurl=http://yum.insync.io/fedora/\$releasever/\ngpgcheck=1\ngpgkey=https://d2t3ff60b2tol4.cloudfront.net/repomd.xml.key\nenabled=1\nmetadata_expire=120m' > /etc/yum.repos.d/insync.repo\" && \
       sudo dnf update -y && \
       sudo dnf install chromium insync -y && \
-      distrobox-export --app insync  --extra-flags "start"' && \
+      distrobox-export --app insync  --extra-flags \"start\"" && \
     mkdir -p ~/.config/autostart && \
     rm -f ~/.config/autostart/insync.desktop && \
-    cp ~/.local/share/applications/fedora-solaar.desktop ~/.config/autostart/fedora-solaar.desktop && \
+    cp ~/.local/share/applications/fedora-insync.desktop ~/.config/autostart/fedora-insync.desktop && \
     distrobox enter -n fedora -- insync start
 
 # Install Rambox for chat and productivity tools management
