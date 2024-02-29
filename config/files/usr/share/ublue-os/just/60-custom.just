@@ -94,6 +94,14 @@ f /dev/shm/looking-glass 0660 1000 qemu -
 LOOKING_GLASS_TMP
     sudo semanage fcontext -a -t svirt_tmpfs_t "/dev/shm/looking-glass"
 
+# Install the looking-glass client binary
+install-looking-glass: distrobox-check-fedora
+    distrobox-enter -n fedora -- bash -c "sudo dnf copr enable pgaskin/looking-glass-client -y && \
+      sudo dnf update -y && \
+      sudo dnf install looking-glass-client -y && \
+      distrobox-export --bin /usr/bin/looking-glass-client"
+    echo "Run looking-glass-client in a terminal to run the client"
+
 # # Install Solaar for Logitech Mice, Keyboards, and Trackpads
 # install-solaar: distrobox-check-fedora
 #     distrobox-enter -n fedora -- bash -c 'sudo dnf install -y \
