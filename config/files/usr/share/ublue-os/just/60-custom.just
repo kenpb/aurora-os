@@ -8,12 +8,8 @@
 # Apply the silverblue usergroup workaround to fix my user groups
 fix-user-groups:
     #!/usr/bin/bash
-    sudo su
-    groups=("libvirt" "kvm" "qemu" "docker")
-    for group in "${groups[@]}"; do
-        usermod -a -G "$group"
-        grep -E "^$group:" /usr/lib/group >> /etc/group
-    done
+    groups=("libvirt" "kvm" "qemu" "docker") && \
+    sudo bash -c 'for group in "${groups[@]}"; do usermod -a -G "$group" && grep -E "^$group:" /usr/lib/group >> /etc/group; done'
 
 # # Fix the default Steam config to improve download speeds
 # fix-steam-download-speed:
@@ -90,9 +86,13 @@ fix-user-groups:
 #       echo "Enable virtualization with ujust enable-virtualization before running ujust enable-vfio."
 #     fi
 
-# # Add SELinux file context for default looking-glass shm file so that libvirt can create it when needed
-# selinux-looking-glass:
-#     sudo semanage fcontext -a -t svirt_tmpfs_t /dev/shm/looking-glass
+# Add SELinux file context for default looking-glass shm file so that libvirt can create it when needed
+selinux-looking-glass:
+    sudo tee /etc/tmpfiles.d/10-looking-glass.conf > /dev/null << 'LOOKING_GLASS_TMP'
+# Type Path               Mode UID GID Age Argument
+f /dev/shm/looking-glass 0660 1000 qemu -
+LOOKING_GLASS_TMP
+    sudo semanage fcontext -a -t svirt_tmpfs_t "/dev/shm/looking-glass"
 
 # # Install Solaar for Logitech Mice, Keyboards, and Trackpads
 # install-solaar: distrobox-check-fedora
@@ -114,7 +114,9 @@ install-insync: distrobox-check-fedora
     mkdir -p ~/.config/autostart && \
     rm -f ~/.config/autostart/insync.desktop && \
     cp ~/.local/share/applications/fedora-insync.desktop ~/.config/autostart/fedora-insync.desktop && \
-    distrobox enter -n fedora -- insync start
+    distrobox enter -n fedora -- insync start && \
+    echo "The script does not properly insert quotations in the autostart entry." && \
+    echo "Add quotes to the command in $HOME/.config/autostart/fedora-insync.desktop like this: \"insync start\""
 
 # Install Rambox for chat and productivity tools management
 install-rambox: distrobox-check-fedora

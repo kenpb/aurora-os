@@ -1,0 +1,9 @@
+name: python-pip
+shortdesc: The python-pip module offers pseudo-declarative package and repository management using python pip.
+readme: https://raw.githubusercontent.com/blue-build/modules/main/modules/rpm-ostree/README.md
+example: |
+  type: python-pip
+  install:
+    - pyclip
+  remove:
+    - topgrade
