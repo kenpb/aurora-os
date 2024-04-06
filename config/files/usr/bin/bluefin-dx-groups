@@ -16,6 +16,16 @@ if ! grep -q "^libvirt" /etc/group; then
     grep '^libvirt' /usr/lib/group | sudo tee -a /etc/group > /dev/null
 fi
 
+# Make sure the docker group exists
+if ! grep -q "^docker" /etc/group; then
+    grep '^docker' /usr/lib/group | sudo tee -a /etc/group > /dev/null
+fi
+
+# Make sure the lxd group exists
+if ! grep -q "^lxd" /etc/group; then
+    grep '^lxd' /usr/lib/group | sudo tee -a /etc/group > /dev/null
+fi
+
 # Setup Groups
 wheelarray=($(getent group wheel | cut -d ":" -f 4 | tr  ',' '\n'))
 for user in $wheelarray
