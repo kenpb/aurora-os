@@ -36,6 +36,9 @@ modules:
       - docker-buildx-plugin
       # waydroid
       - wl-clipboard
+      - virt-manager
+      - edk2-ovmf
+      - qemu
 
     remove:
       - input-remapper
@@ -87,7 +90,9 @@ modules:
         - org.blender.Blender
         - org.keepassxc.KeePassXC
         - org.kde.kdenlive
+        - org.kde.okular
         - org.remmina.Remmina
+        - com.makemkv.MakeMKV
         - org.qbittorrent.qBittorrent
         - org.apache.directory.studio
         - org.raspberrypi.rpi-imager
