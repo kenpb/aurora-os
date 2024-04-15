@@ -14,6 +14,22 @@ install-looking-glass: distrobox-check-fedora
       distrobox-export --bin /usr/bin/looking-glass-client"
     echo "Run looking-glass-client in a terminal to run the client"
 
+# Install dive for docker images exploration
+install-dive: distrobox-check-fedora
+    distrobox-enter -n fedora -- bash -c '
+      DIVE_VERSION=$(curl -sL "https://api.github.com/repos/wagoodman/dive/releases/latest" | grep '"tag_name":' | sed -E 's/.*"v([^"]+)".*/\1/') && \
+      sudo dnf install -y \
+        "https://github.com/wagoodman/dive/releases/download/v${DIVE_VERSION}/dive_${DIVE_VERSION}_linux_amd64.rpm" \ &&
+      distrobox-export --bin /usr/bin/dive'
+
+# TODO: Install piper text to speech
+install-piper-tts: distrobox-check-fedora
+    # https://github.com/rhasspy/piper
+
+# TODO: Install talon voice
+install-talon-voice: distrobox-check-fedora
+    # https://talonvoice.com/
+
 # Install Insync for file synchronization with cloud services
 install-insync: distrobox-check-fedora
     distrobox-enter -n fedora -- bash -c "releasever=$(rpm -q --qf \"%{version}\" -f /etc/fedora-release) && \
