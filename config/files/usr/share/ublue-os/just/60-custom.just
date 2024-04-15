@@ -16,10 +16,10 @@ install-looking-glass: distrobox-check-fedora
 
 # Install dive for docker images exploration
 install-dive: distrobox-check-fedora
-    distrobox-enter -n fedora -- bash -c '
-      DIVE_VERSION=$(curl -sL "https://api.github.com/repos/wagoodman/dive/releases/latest" | grep '"tag_name":' | sed -E 's/.*"v([^"]+)".*/\1/') && \
+    distrobox-enter -n fedora -- bash -c 'DIVE_VERSION=$(curl -sL \
+        "https://api.github.com/repos/wagoodman/dive/releases/latest" | grep "\"tag_name\":" | sed -E "s/.*\"v([^\"]+)\".*/\\1/") && \
       sudo dnf install -y \
-        "https://github.com/wagoodman/dive/releases/download/v${DIVE_VERSION}/dive_${DIVE_VERSION}_linux_amd64.rpm" \ &&
+        "https://github.com/wagoodman/dive/releases/download/v${DIVE_VERSION}/dive_${DIVE_VERSION}_linux_amd64.rpm" && \
       distrobox-export --bin /usr/bin/dive'
 
 # TODO: Install piper text to speech
