@@ -22,14 +22,6 @@ install-dive: distrobox-check-fedora
         "https://github.com/wagoodman/dive/releases/download/v${DIVE_VERSION}/dive_${DIVE_VERSION}_linux_amd64.rpm" && \
       distrobox-export --bin /usr/bin/dive'
 
-# TODO: Install piper text to speech
-install-piper-tts: distrobox-check-fedora
-    # https://github.com/rhasspy/piper
-
-# TODO: Install talon voice
-install-talon-voice: distrobox-check-fedora
-    # https://talonvoice.com/
-
 # Install Insync for file synchronization with cloud services
 install-insync: distrobox-check-fedora
     distrobox-enter -n fedora -- bash -c "releasever=$(rpm -q --qf \"%{version}\" -f /etc/fedora-release) && \
