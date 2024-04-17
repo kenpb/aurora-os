@@ -22,6 +22,17 @@ install-dive: distrobox-check-fedora
         "https://github.com/wagoodman/dive/releases/download/v${DIVE_VERSION}/dive_${DIVE_VERSION}_linux_amd64.rpm" && \
       distrobox-export --bin /usr/bin/dive'
 
+install-windows-fonts: distrobox-check-fedora
+    distrobox-enter -n fedora -- bash -c 'sudo dnf install -y \
+        https://www.cabextract.org.uk/cabextract-1.11-1.x86_64.rpm && \
+    _sfurl="http://downloads.sourceforge.net/corefonts" && \
+    fonts=($_sfurl/andale32.exe $_sfurl/arial32.exe $_sfurl/arialb32.exe $_sfurl/comic32.exe $_sfurl/courie32.exe $_sfurl/georgi32.exe \
+    $_sfurl/impact32.exe $_sfurl/times32.exe $_sfurl/trebuc32.exe $_sfurl/verdan32.exe $_sfurl/webdin32.exe) && \
+    for i in "${fonts[@]}"; do wget $$i && cabextract $$(basename $$i) -d fonts; done && \
+    mkdir ~/.local/share/fonts && \
+    mkdir ~/.local/share/fonts/mscorefonts && \
+    cp -v fonts/*.ttf fonts/*.TTF ~/.local/share/fonts/mscorefonts/'
+
 # Install Insync for file synchronization with cloud services
 install-insync: distrobox-check-fedora
     distrobox-enter -n fedora -- bash -c "releasever=$(rpm -q --qf \"%{version}\" -f /etc/fedora-release) && \
