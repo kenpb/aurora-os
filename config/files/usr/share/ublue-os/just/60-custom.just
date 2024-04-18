@@ -1,4 +1,4 @@
-# most of this is from bazzite
+# most of this is from/based on bazzite
 
 # Apply the silverblue usergroup workaround to fix my user groups
 fix-user-groups:
@@ -22,16 +22,16 @@ install-dive: distrobox-check-fedora
         "https://github.com/wagoodman/dive/releases/download/v${DIVE_VERSION}/dive_${DIVE_VERSION}_linux_amd64.rpm" && \
       distrobox-export --bin /usr/bin/dive'
 
+# Install Arial, Verdana and all the MS Windows fonts
 install-windows-fonts: distrobox-check-fedora
-    distrobox-enter -n fedora -- bash -c 'sudo dnf install -y \
-        https://www.cabextract.org.uk/cabextract-1.11-1.x86_64.rpm && \
-    _sfurl="http://downloads.sourceforge.net/corefonts" && \
-    fonts=($_sfurl/andale32.exe $_sfurl/arial32.exe $_sfurl/arialb32.exe $_sfurl/comic32.exe $_sfurl/courie32.exe $_sfurl/georgi32.exe \
-    $_sfurl/impact32.exe $_sfurl/times32.exe $_sfurl/trebuc32.exe $_sfurl/verdan32.exe $_sfurl/webdin32.exe) && \
-    for i in "${fonts[@]}"; do wget $$i && cabextract $$(basename $$i) -d fonts; done && \
-    mkdir ~/.local/share/fonts && \
-    mkdir ~/.local/share/fonts/mscorefonts && \
-    cp -v fonts/*.ttf fonts/*.TTF ~/.local/share/fonts/mscorefonts/'
+    distrobox-enter -n fedora -- bash -c 'sudo dnf install -y cabextract && \
+      _sfurl="http://downloads.sourceforge.net/corefonts" && \
+      fonts=("$_sfurl/andale32.exe" "$_sfurl/arial32.exe" "$_sfurl/arialb32.exe" "$_sfurl/comic32.exe" "$_sfurl/courie32.exe" "$_sfurl/georgi32.exe" \
+        "$_sfurl/impact32.exe" "$_sfurl/times32.exe" "$_sfurl/trebuc32.exe" "$_sfurl/verdan32.exe" "$_sfurl/webdin32.exe") && \
+      mkdir -p ~/.local/share/fonts/mscorefonts && mkdir -p /tmp/fonts && \
+      for i in "${fonts[@]}"; do wget -O "/tmp/fonts/$(basename \"$i\")" "$i" && cabextract "/tmp/fonts/$(basename \"$i\")" -d /tmp/fonts; done && \
+      cp -v /tmp/fonts/*.ttf /tmp/fonts/*.TTF ~/.local/share/fonts/mscorefonts/' && \
+    sudo fc-cache -f -v
 
 # Install Insync for file synchronization with cloud services
 install-insync: distrobox-check-fedora
