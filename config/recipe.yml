@@ -26,6 +26,7 @@ modules:
       - https://packages.microsoft.com/yumrepos/vscode/config.repo
     install:
       - code
+      # antivirus
       - clamav-freshclam
       - clamd
       - clamtk
@@ -37,7 +38,9 @@ modules:
       - docker-compose-plugin
       # waydroid
       - wl-clipboard
+      # virtualization
       - virt-manager
+      - virt-install
       - edk2-ovmf
       - qemu
 
