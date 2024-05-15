@@ -88,7 +88,6 @@ modules:
         - org.videolan.VLC
         - org.gimp.GIMP
         - org.kde.krita
-        - org.kde.kate
         - org.kde.kompare
         - org.inkscape.Inkscape
         - org.blender.Blender

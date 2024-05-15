@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+cp /usr/bin/swtpm /usr/local/bin/swtpm
+mount --bind /usr/local/bin/swtpm /usr/bin/swtpm
+semanage fcontext -a -t swtpm_exec_t "/usr/bin/swtpm"
+restorecon /usr/bin/swtpm
