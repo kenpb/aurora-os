@@ -5,7 +5,7 @@ After=local-fs.target
 
 [Service]
 Type=oneshot
-ExecStart=/usr/local/bin/swtpm-workaround
+ExecStart=/usr/bin/swtpm-workaround
 
 [Install]
 WantedBy=multi-user.target
