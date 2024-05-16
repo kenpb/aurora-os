@@ -63,6 +63,17 @@ modules:
     install:
       - pyclip
 
+  - type: systemd
+    user:
+      enabled:
+        - bluefin-dx-user-vscode.service
+    system:
+      enabled:
+        - docker.socket
+        - bluefin-dx-groups.service
+        - swtpm-workaround.service
+        - libvirtd
+
   - type: default-flatpaks
     notify: true   # Send notification after install/uninstall is finished (true/false)
     system:
@@ -116,6 +127,5 @@ modules:
   - type: script
     scripts:
       - breeze-fedora-workaround.sh
-      - systemd-dx.sh
 
   - type: signing # this sets up the proper policy & signing files for signed images to work fully
