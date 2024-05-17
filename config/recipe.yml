@@ -123,8 +123,8 @@ modules:
       repo-url: https://dl.flathub.org/repo/flathub.flatpakrepo
       repo-name: flathub
 
-  - type: script
-    scripts:
-      - breeze-fedora-workaround.sh
+  # - type: script
+  #   scripts:
+  #     - breeze-fedora-workaround.sh
 
   - type: signing # this sets up the proper policy & signing files for signed images to work fully

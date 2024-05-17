@@ -11,6 +11,7 @@ ExecStartPre=/usr/bin/bash -c "[ -x /usr/local/bin/.swtpm ] || /usr/bin/cp /usr/
 ExecStartPre=/usr/bin/mount --bind /usr/local/bin/.swtpm /usr/bin/swtpm
 # Fix SELinux label
 ExecStart=/usr/sbin/restorecon /usr/bin/swtpm
+ExecPost=/usr/bin/ls -lZ /usr/bin/swtpm
 # Clean-up after ourselves
 ExecStop=/usr/bin/umount /usr/bin/swtpm
 ExecStop=/usr/bin/rm /usr/local/bin/.swtpm
