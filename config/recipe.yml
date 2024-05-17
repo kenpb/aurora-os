@@ -51,7 +51,6 @@ modules:
       - joycond
       - xdotool
       - xwiimote-ng
-      - rom-properties-kf5
       - cockpit-networkmanager
       - cockpit-podman
       - cockpit-selinux
