@@ -44,19 +44,19 @@ modules:
       - edk2-ovmf
       - qemu
 
-    remove:
-      - input-remapper
-      - tailscale
-      - joystickwake
-      - joycond
-      - xdotool
-      - xwiimote-ng
-      - cockpit-networkmanager
-      - cockpit-podman
-      - cockpit-selinux
-      - cockpit-system
-      - cockpit-navigator
-      - cockpit-storaged
+    # remove:
+    #   - input-remapper
+    #   - tailscale
+    #   - joystickwake
+    #   - joycond
+    #   - xdotool
+    #   - xwiimote-ng
+    #   - cockpit-networkmanager
+    #   - cockpit-podman
+    #   - cockpit-selinux
+    #   - cockpit-system
+    #   - cockpit-navigator
+    #   - cockpit-storaged
 
   - type: python-pip
     install:
