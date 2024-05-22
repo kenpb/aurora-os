@@ -113,6 +113,7 @@ modules:
         - org.mozilla.Thunderbird
         - md.obsidian.Obsidian
         - it.mijorus.gearlever
+        - com.usebottles.bottles
       remove:
         - org.kde.haruna
         - com.github.marhkb.Pods
