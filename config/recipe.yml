@@ -67,6 +67,7 @@ modules:
     user:
       enabled:
         - bluefin-dx-user-vscode.service
+        - aurora-user-piper-tts.service
     system:
       enabled:
         - docker.socket

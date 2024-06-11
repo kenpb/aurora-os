@@ -19,7 +19,7 @@ PLATFORM="${PLATFORM:-$(uname -m)}"
 PIPER_BIN_GZ_URL="https://github.com/rhasspy/piper/releases/latest/download/piper_linux_$PLATFORM.tar.gz"
 
 PIPER_GENERIC_CONF=$(cat <<EOF
-DefaultVoice "en_GB-amy-medium"
+DefaultVoice "en_US-amy-medium"
 GenericCmdDependency "sox"
 GenericCmdDependency "jq"
 GenericExecuteSynth \
