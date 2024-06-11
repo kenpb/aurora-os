@@ -1,0 +1,101 @@
+#!/usr/bin/env bash
+
+# SCRIPT VERSION
+GROUP_SETUP_VER=1
+GROUP_SETUP_VER_FILE="/etc/ublue/piper-tts"
+GROUP_SETUP_VER_RAN=$(cat "$GROUP_SETUP_VER_FILE")
+
+# Run script if updated
+if [[ -f $GROUP_SETUP_VER_FILE && "$GROUP_SETUP_VER" = "$GROUP_SETUP_VER_RAN" ]]; then
+    echo "Group setup has already run. Exiting..."
+    exit 0
+fi
+
+BASE_PIPER_VOICES_URL=https://huggingface.co/rhasspy/piper-voices/resolve/main
+INSTALL_DIR="$HOME/.local/share/speech-dispatcher-piper"
+CONFIG_DIR="$HOME/.config/speech-dispatcher/modules"
+CONFIG_PATH="$CONFIG_DIR/piper-generic.conf"
+PLATFORM="${PLATFORM:-$(uname -m)}"
+PIPER_BIN_GZ_URL="https://github.com/rhasspy/piper/releases/latest/download/piper_linux_$PLATFORM.tar.gz"
+
+PIPER_GENERIC_CONF=$(cat <<EOF
+DefaultVoice "en_GB-amy-medium"
+GenericCmdDependency "sox"
+GenericCmdDependency "jq"
+GenericExecuteSynth \
+"cd $INSTALL_DIR && \
+./check_piper_voice.sh \$VOICE && \
+printf %s \'\$DATA\' \
+| ./piper/piper --model \'voices/\$VOICE.onnx\' --output_raw \
+| sox -v \$VOLUME -r \$(jq .audio.sample_rate < \'voices/\$VOICE.onnx.json\') -c 1 \
+    -b 16 -e signed-integer -t raw - -t wav - tempo \$RATE pitch \$PITCH norm \
+| \$PLAY_COMMAND"
+GenericRateAdd 1
+GenericPitchAdd 1
+GenericVolumeAdd 1
+GenericRateMultiply 1
+GenericPitchMultiply 750
+GenericVolumeMultiply 1
+EOF
+)
+
+# checks if piper voice is present and download it if not
+CHECK_PIPER_VOICE_SH=$(cat <<EOF
+#!/bin/sh
+VOICE=\$1
+VOICE_MODEL=\$VOICE.onnx
+VOICE_JSON=\$VOICE.onnx.json
+BASE_PIPER_VOICES_URL=$BASE_PIPER_VOICES_URL
+if ! [ -f "voices/\$VOICE_MODEL" ] || ! [ -f "voices/\$VOICE_JSON" ]; then
+    LANG_FULL=\$(echo "\$VOICE" | cut -d '-' -f 1)
+    LANG_SHORT=\$(echo "\$LANG_FULL" | cut -d '_' -f 1)
+    NAME=\$(echo "\$VOICE" | cut -d '-' -f 2)
+    QUALITY=\$(echo "\$VOICE" | cut -d '-' -f 3)
+    if ! [ -f "voices/\$VOICE_JSON" ]; then
+        curl -s -L -C - -o "voices/\$VOICE_JSON.download" "\$BASE_PIPER_VOICES_URL/\$LANG_SHORT/\$LANG_FULL/\$NAME/\$QUALITY/\$VOICE_JSON?download=true"
+        mv "voices/\$VOICE_JSON.download" "voices/\$VOICE_JSON"
+    fi
+    if ! [ -f "voices/\$VOICE_MODEL" ]; then
+        curl -s -L -C - -o "voices/\$VOICE_MODEL.download" "\$BASE_PIPER_VOICES_URL/\$LANG_SHORT/\$LANG_FULL/\$NAME/\$QUALITY/\$VOICE_MODEL?download=true"
+        mv "voices/\$VOICE_MODEL.download" "voices/\$VOICE_MODEL"
+    fi
+fi
+EOF
+)
+
+mkdir -p "$CONFIG_DIR"
+mkdir -p "$INSTALL_DIR/voices"
+
+VOICE_JSON=$(mktemp)
+curl -s -L -o "$VOICE_JSON" "$BASE_PIPER_VOICES_URL/voices.json"
+VOICES=$(jq -r 'map(.key) | @sh' < "$VOICE_JSON")
+rm "$VOICE_JSON"
+
+for VOICE in $VOICES; do
+    VOICE=${VOICE#\'} && VOICE=${VOICE%\'}
+    LANG_FULL=$(echo "$VOICE" | cut -d '-' -f 1)
+
+    # if voice contains "female", use FEMALE1 as voice name, otherwise use MALE1
+    VOICE_GENDER=MALE1
+    case "$VOICE" in
+      *female*)
+        VOICE_GENDER=FEMALE1
+        ;;
+    esac
+
+    echo "AddVoice \"$LANG_FULL\" \"$VOICE_GENDER\" \"$VOICE\"" >> "$CONFIG_PATH"
+done
+echo "$PIPER_GENERIC_CONF" >> "$CONFIG_PATH"
+
+PIPER_BIN_GZ=$(mktemp)
+curl -s -L -o "$PIPER_BIN_GZ" "$PIPER_BIN_GZ_URL"
+rm -rf "$INSTALL_DIR/piper"
+tar -xzf "$PIPER_BIN_GZ" -C "$INSTALL_DIR"
+rm "$PIPER_BIN_GZ"
+
+echo "$CHECK_PIPER_VOICE_SH" > "$INSTALL_DIR/check_piper_voice.sh"
+chmod +x "$INSTALL_DIR/check_piper_voice.sh"
+
+# Prevent future executions
+echo "Writing state file"
+echo "$GROUP_SETUP_VER" > "$GROUP_SETUP_VER_FILE"
