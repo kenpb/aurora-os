@@ -1,13 +1,15 @@
 #!/usr/bin/env bash
 
 # SCRIPT VERSION
-GROUP_SETUP_VER=1
-GROUP_SETUP_VER_FILE="/etc/ublue/piper-tts"
-GROUP_SETUP_VER_RAN=$(cat "$GROUP_SETUP_VER_FILE")
+USER_SETUP_VER=1
+USER_SETUP_VER_FILE="${XDG_DATA_HOME:-$HOME/.local/share}/ublue/piper-configured"
+USER_SETUP_VER_RAN=$(cat "$USER_SETUP_VER_FILE")
+
+mkdir -p "$(dirname "$USER_SETUP_VER_FILE")" || exit 1
 
 # Run script if updated
-if [[ -f $GROUP_SETUP_VER_FILE && "$GROUP_SETUP_VER" = "$GROUP_SETUP_VER_RAN" ]]; then
-    echo "Group setup has already run. Exiting..."
+if [[ -f $USER_SETUP_VER_FILE && "$USER_SETUP_VER" = "$USER_SETUP_VER_RAN" ]]; then
+    echo "User setup v$VER has already run. Exiting..."
     exit 0
 fi
 
@@ -98,4 +100,4 @@ chmod +x "$INSTALL_DIR/check_piper_voice.sh"
 
 # Prevent future executions
 echo "Writing state file"
-echo "$GROUP_SETUP_VER" > "$GROUP_SETUP_VER_FILE"
+echo "$USER_SETUP_VER" > "$USER_SETUP_VER_FILE"

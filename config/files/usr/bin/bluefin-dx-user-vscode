@@ -11,16 +11,16 @@ USER_SETUP_VER_FILE_V1="$HOME/.bluefin-vscode-configured"
 # Upgrade from v1 to v2 changes only the location of the USER_SETUP_VER.
 # Exit if v1 file is present.
 if [[ -f $USER_SETUP_VER_FILE_V1 ]]; then
-  echo "User setup v1 has already run. Exiting..."
-  rm $USER_SETUP_VER_FILE_V1
-  echo "$USER_SETUP_VER" > "$USER_SETUP_VER_FILE"
-  exit 0
+    echo "User setup v1 has already run. Exiting..."
+    rm $USER_SETUP_VER_FILE_V1
+    echo "$USER_SETUP_VER" > "$USER_SETUP_VER_FILE"
+    exit 0
 fi
 
 # Run script if updated
 if [[ -f $USER_SETUP_VER_FILE && "$USER_SETUP_VER" = "$USER_SETUP_VER_RAN" ]]; then
-  echo "User setup v$VER has already run. Exiting..."
-  exit 0
+    echo "User setup v$VER has already run. Exiting..."
+    exit 0
 fi
 
 # Setup VSCode
