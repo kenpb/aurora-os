@@ -27,6 +27,7 @@ modules:
     install:
       - code
       - sox
+      - speech-dispatcher-utils
       # antivirus
       - clamav-freshclam
       - clamd
