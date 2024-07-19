@@ -59,6 +59,18 @@ install-rambox: distrobox-check-fedora
     rm -f ~/.config/autostart/fedora-rambox.desktop && \
     cp ~/.local/share/applications/fedora-rambox.desktop ~/.config/autostart/fedora-rambox.desktop
 
+# Create a VPN distrobox with Google Chrome and OpenConnect pre-installed
+distrobox-vpn-box:
+    #!/bin/env bash
+    grep -qvz "vpn-box" <<< $(distrobox list) && \
+    distrobox create vpn-box --name vpn-box --image debian:latest --unshare-all && \
+    distrobox-enter -n fedora -- bash -c "cd /tmp && \
+      wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && \
+      sudo apt-get install openconnect -y && \
+      sudo dpkg -i google-chrome-stable_current_amd64.deb && \
+      sudo apt --fix-broken install -y && \
+      distrobox-export --app google-chrome-stable"
+
 # Create fedora distrobox if it doesn't exist
 [private]
 distrobox-check-fedora:
