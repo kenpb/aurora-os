@@ -66,9 +66,11 @@ distrobox-vpn-box:
     distrobox create vpn-box --name vpn-box --image debian:latest --unshare-all && \
     distrobox-enter -n fedora -- bash -c "cd /tmp && \
       wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && \
-      sudo apt-get install openconnect -y && \
+      sudo apt-get install -y openconnect && \
       sudo dpkg -i google-chrome-stable_current_amd64.deb && \
       sudo apt --fix-broken install -y && \
+      sudo apt-get install -y postgresql-client && \
+      sudo apt-get install -y mariadb-client && \
       distrobox-export --app google-chrome-stable"
 
 # Create fedora distrobox if it doesn't exist
