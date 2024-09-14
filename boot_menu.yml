@@ -1,5 +1,0 @@
-ublue_variants:
-  - label: kenpb/aurora-os
-    ks: /kickstart/ublue-os.ks
-    flavors:
-      - label: aurora-os
