@@ -64,7 +64,7 @@ distrobox-vpn-box:
     #!/bin/env bash
     grep -qvz "vpn-box" <<< $(distrobox list) && \
     distrobox create vpn-box --name vpn-box --image debian:latest --unshare-all && \
-    distrobox-enter -n fedora -- bash -c "cd /tmp && \
+    distrobox-enter -n vpn-box -- bash -c "cd /tmp && \
       wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && \
       sudo apt-get install -y openconnect && \
       sudo dpkg -i google-chrome-stable_current_amd64.deb && \

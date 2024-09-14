@@ -26,8 +26,8 @@ modules:
       - https://packages.microsoft.com/yumrepos/vscode/config.repo
     install:
       - code
-      # - sox
-      # - speech-dispatcher-utils
+      - sox
+      - speech-dispatcher-utils
       # antivirus
       - clamav-freshclam
       - clamd
