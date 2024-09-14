@@ -17,12 +17,6 @@ To rebase an existing Silverblue/Kinoite installation to the latest build:
 - Then rebase to the signed image, like so:
   ```
   rpm-ostree rebase ostree-image-signed:docker://ghcr.io/kenpb/aurora-os:latest
-  ```
-- Reboot again to complete the installation
-  ```
-  systemctl reboot
-  ```
-
 This repository builds date tags as well, so if you want to rebase to a particular day's build:
 
 ```
